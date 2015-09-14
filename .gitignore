@@ -6,6 +6,8 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+keys.py
+keys.pyc
 .Python
 env/
 build/
