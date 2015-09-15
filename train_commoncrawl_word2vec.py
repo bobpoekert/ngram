@@ -1,6 +1,9 @@
 import subprocess
 import gensim, logging
-import os
+import os, re
+from nltk.stem import WordNetLemmatizer
+
+lemmatizer = WordNetLemmatizer()
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
@@ -33,15 +36,21 @@ def dump_sentences(out_dir):
     for url in commoncrawl_urls:
         subprocess.call(['curl', url, '-o', '%s/%s' % (out_dir, url.split('/')[-1])])
 
+#phrase_model = gensim.models.Phrases.load('commoncrawl_phrases.model')
+
 def sentences_from_dir(d):
     ctr = 0
     for fname in os.listdir(d):
         if '.xz' in fname:
             proc = subprocess.Popen(['xzcat', os.path.join(d, fname)], stdout=subprocess.PIPE)
             for row in proc.stdout:
-                yield row.split()
+                try:
+                    row = gensim.utils.any2utf8(row)
+                except:
+                    continue
+                yield [v.lower() for v in re.split(r'[^a-zA-Z0-9\-]', row)]
                 ctr += 1
-                if ctr > 100000000:
+                if ctr > 1000000000:
                     return
 
 def build_model(get_sentences, outf, workers=7):
