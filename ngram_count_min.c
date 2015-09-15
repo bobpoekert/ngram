@@ -115,13 +115,13 @@ int main(int argc, char **argv) {
 
     uint64_t *file_d;
     uint64_t *file_w;
-    *file_d = (uint64_t *) sketch_buffer;
+    file_d = (uint64_t *) sketch_buffer;
     sketch_buffer += sizeof(uint64_t);
-    *file_w = (uint64_t *) sketch_buffer;
+    file_w = (uint64_t *) sketch_buffer;
     sketch_buffer += sizeof(uint64_t);
 
-    file_d = d;
-    file_w = w;
+    *file_d = d;
+    *file_w = w;
 
     uint32_t *sketch_arrays;
     sketch_arrays = (uint32_t *) sketch_buffer;
