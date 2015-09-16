@@ -79,6 +79,7 @@ int main(int argc, char **argv) {
     output_fname = argv[1];
     
     uint64_t line_count = 0;
+    uint64_t word_count = 0;
 
     /* number of hash functions */
     uint64_t d = D;
@@ -232,10 +233,12 @@ int main(int argc, char **argv) {
 
                 /* This is part of a word */
                 in_word = 1;
+                word_buf_end++;
                 break;
             default:
                 /* This is not part of a word */
                 if (in_word == 1 && word_buf_end > 1) {
+                    word_count++;
                     /* we were in a word, and now we're not 
                      * compute word hashes */
                    /* for (int i=0; i < word_buf_end; i++) {
@@ -287,7 +290,7 @@ int main(int argc, char **argv) {
                 if (inchar == '\n') {
                     line_count++;
                     if (line_count % 1000000 == 0) {
-                        printf("%" PRIu64 "\n", line_count);
+                        printf("lines: %" PRIu64 " words: %" PRIu64 "\n", line_count, word_count);
                     }
                     if (line_count % 1100000000 == 0) {
                         fsync(sketch_fd);
@@ -296,8 +299,6 @@ int main(int argc, char **argv) {
                 }
                 break;
         }
-
-        word_buf_end++;
        // printf("%d\n", word_buf_end);
 
     }

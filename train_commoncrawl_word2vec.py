@@ -50,8 +50,6 @@ def sentences_from_dir(d):
                     continue
                 yield [v.lower() for v in re.split(r'[^a-zA-Z0-9\-]', row)]
                 ctr += 1
-                if ctr > 1000000000:
-                    return
 
 def build_model(get_sentences, outf, workers=7):
     model = gensim.models.Word2Vec(workers=workers)
