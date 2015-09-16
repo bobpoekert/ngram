@@ -186,7 +186,7 @@ int main(int argc, char **argv) {
             case 't':
             case 'u':
             case 'v':
-
+            case 'w':
             case 'x':
             case 'y':
             case 'z':
